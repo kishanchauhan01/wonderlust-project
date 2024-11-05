@@ -22,7 +22,7 @@ import listingRouter from "./routers/listing.router.js";
 app.use(rootRouter);
 
 //listing router
-app.use("/api/v1/listing", listingRouter);
-app.use(listingRouter);
+app.use("/api/v1/", listingRouter);
+app.use("/api/v1/", listingRouter);
 
 export { app };
