@@ -1,5 +1,6 @@
 import { Listing } from "../models/listing.model.js";
 import { asyncHandler } from "../utils/asynHandler.js";
+import { APIV } from "../constants.js";
 
 const testListing = asyncHandler(async (req, res) => {
   let sampleListing = new Listing({
@@ -36,7 +37,7 @@ const newList = asyncHandler((req, res) => {
 const addListing = asyncHandler(async (req, res) => {
   const newListing = new Listing(req.body.listing);
   await newListing.save();
-  return res.status(200).redirect("/api/v1/listings");
+  return res.status(200).redirect(APIV + "/");
 });
 
 const editListing = asyncHandler(async (req, res) => {
@@ -48,7 +49,14 @@ const editListing = asyncHandler(async (req, res) => {
 const updateListing = asyncHandler(async (req, res) => {
   let { id } = req.params;
   await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-  return res.status(200).redirect("/api/v1/listings");
+  return res.status(200).redirect(APIV + `/${id}`);
+});
+
+const deleteListing = asyncHandler(async (req, res) => {
+  let { id } = req.params;
+  const deletedListing = await Listing.findByIdAndDelete(id);
+  console.log(deletedListing);
+  return res.status(200).redirect(APIV);
 });
 
 export {
@@ -59,4 +67,5 @@ export {
   addListing,
   editListing,
   updateListing,
+  deleteListing,
 };

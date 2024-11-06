@@ -9,7 +9,7 @@
 
 <body>
     <h3>Edit your Listing</h3>
-    <form method="POST" action="/api/v1/listings/update/<%= listing._id %>?_method=PUT">
+    <form method="POST" action="/api/v1/listings/<%= listing._id %>/update?_method=PUT">
         <input type="text" name="listing[title]" value="<%= listing.title %>">
         <br><br>
         <textarea type="text" name="listing[description]"><%= listing.description %></textarea>
