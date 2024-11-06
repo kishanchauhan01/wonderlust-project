@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import methodOverride from "method-override";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.set("view engine", "ejs");
 
 //pre Middleware
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 //routes import
 import rootRouter from "./routers/index.router.js";
@@ -22,7 +24,6 @@ import listingRouter from "./routers/listing.router.js";
 app.use(rootRouter);
 
 //listing router
-app.use("/api/v1/", listingRouter);
 app.use("/api/v1/", listingRouter);
 
 export { app };

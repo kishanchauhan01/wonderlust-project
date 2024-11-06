@@ -1,6 +1,7 @@
 import { Listing } from "../models/listing.model.js";
+import { asyncHandler } from "../utils/asynHandler.js";
 
-const testListing = async (req, res) => {
+const testListing = asyncHandler(async (req, res) => {
   let sampleListing = new Listing({
     title: "My New Villa",
     description: "By the beach",
@@ -8,23 +9,54 @@ const testListing = async (req, res) => {
     location: "Calangute, Goa",
     country: "India",
   });
+
   await sampleListing
     .save()
     .then((result) => console.log(result))
     .catch((error) => console.log(error));
 
-  res.send("Successful testing...");
-};
+  return res.status(200).send("Successful testing...");
+});
 
-const allListings = async (req, res) => {
+const allListings = asyncHandler(async (req, res) => {
   const all_listings = await Listing.find({});
-  res.render("./listings/index.ejs", { all_listings });
-};
+  return res.status(200).render("./listings/index.ejs", { all_listings });
+});
 
-const showListing = async (req, res) => {
+const showListing = asyncHandler(async (req, res) => {
   let { id } = req.params;
   const listing = await Listing.findById(id);
-  res.render("./listings/show.ejs", { listing });
-};
+  return res.status(200).render("./listings/show.ejs", { listing });
+});
 
-export { testListing, allListings, showListing };
+const newList = asyncHandler((req, res) => {
+  return res.status(200).render("./listings/new.ejs");
+});
+
+const addListing = asyncHandler(async (req, res) => {
+  const newListing = new Listing(req.body.listing);
+  await newListing.save();
+  return res.status(200).redirect("/api/v1/listings");
+});
+
+const editListing = asyncHandler(async (req, res) => {
+  let { id } = req.params;
+  const listing = await Listing.findById(id);
+  return res.status(200).render("./listings/edit.ejs", { listing });
+});
+
+const updateListing = asyncHandler(async (req, res) => {
+  let { id } = req.params;
+  await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+  return res.status(200).redirect("/api/v1/listings");
+});
+
+export {
+  testListing,
+  allListings,
+  showListing,
+  newList,
+  addListing,
+  editListing,
+  updateListing,
+};
