@@ -1,19 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WanderLust</title>
-</head>
+<% layout("/layouts/boilerplate.ejs") %>
 <body>
     <h3>All listings</h3>
-    <form method="GET" action="/api/v1/listings/new">
+    <!-- <form method="GET" action="/api/v1/listings/new">
         <button>Create New Listing</button>
-    </form>
+    </form> -->
     <ul>
         <% for(let listing of all_listings) { %>
             <li><a href="/api/v1/listings/<%= listing._id %>"> <%= listing.title %></a></li>
         <% } %>
     </ul>
 </body>
-</html>
+
