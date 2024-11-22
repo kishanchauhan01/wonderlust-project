@@ -56,7 +56,7 @@ const deleteListing = asyncHandler(async (req, res) => {
   let { id } = req.params;
   const deletedListing = await Listing.findByIdAndDelete(id);
   console.log(deletedListing);
-  return res.status(200).redirect(APIV);
+  return res.status(200).redirect(APIV)
 });
 
 export {

@@ -16,7 +16,7 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
 
 //pre Middleware
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));//extract data from url
 app.use(methodOverride("_method"));
 
 //routes import
