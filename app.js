@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import methodOverride from "method-override";
 import ejsMate from "ejs-mate";
+import { ApiError } from "./utils/ApiError.js";
 import fs from "fs";
 
 const app = express();
@@ -17,17 +18,8 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
 
 //pre Middleware
-
-// app.use((req, res, next) => {
-//   let {token} = req.query;
-//   if(token === 'giveaccess') {
-//     next()
-//   } else {
-//     res.status(400).send("Access denied")
-//   }
-// })
-
-
+//To write and maintain LOG file
+/*
 app.use((req, res, next) => {
   req.time = new Date(Date.now());
   const logData = `
@@ -46,8 +38,14 @@ app.use((req, res, next) => {
 
   next();
 });
+*/
 app.use(express.urlencoded({ extended: true })); //extract data from url
 app.use(methodOverride("_method"));
+
+app.use((err, req, res, next) => {
+  let { statusCode, message } = err;
+  res.status(statusCode).send(message);
+});
 
 //routes import
 import rootRouter from "./routers/index.router.js";
@@ -59,10 +57,16 @@ app.use(rootRouter);
 //listing router
 app.use("/api/v1/listings", listingRouter);
 
+//Handling for unvalid path
+//The following callback is executed for requests to "/" whether using GET, POST, PUT, DELETE, or any other HTTP request method. he app.all() method is useful for mapping “global” logic for specific path prefixes or arbitrary matches.
+app.all("*", (req, res, next) => {
+  next(new ApiError(404, "404, page not found!"));
+});
 
+//error middleware
+app.use((err, req, res, next) => {
+  let { statusCode = 500, message } = err;
+  res.status(statusCode).render("error.ejs", { err });
+});
 
-
-app.use((req, res) => {
-    res.status(404  ).send("404, Page not found !")
-})
 export { app };

@@ -9,6 +9,8 @@ import {
   updateListing,
   deleteListing,
 } from "../controller/listing.controller.js";
+import { validateListing } from "../middleware/validate.js";
+
 const router = Router();
 
 router.route("/test").get(testListing);
@@ -20,8 +22,8 @@ router.route("/:id").get(showListing); //show route
 router.route("/:id/edit").get(editListing);
 
 //post and put requests
-router.route("/add").post(addListing);
-router.route("/:id/update").put(updateListing);
+router.route("/add").post(validateListing, addListing);
+router.route("/:id/update").put(validateListing, updateListing);
 router.route("/:id/delete").delete(deleteListing);
 
 export default router;
