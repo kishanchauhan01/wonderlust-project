@@ -15,7 +15,8 @@ const __dirname = path.dirname(__filename);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.engine("ejs", ejsMate);
-app.use(express.static(path.join(__dirname, "public")));
+//always add /public to access (http://localhost:8080/public/) if we want to access static files from /public so we have to below code 
+app.use("/public", express.static(process.cwd() + "/public"));
 
 //pre Middleware
 //To write and maintain LOG file
