@@ -1,4 +1,5 @@
 import { Listing } from "../models/listing.model.js";
+import { Review } from "../models/review.model.js";
 import { asyncHandler } from "../utils/asynHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { APIV } from "../constants.js";
@@ -66,6 +67,19 @@ const deleteListing = asyncHandler(async (req, res) => {
   return res.status(200).redirect(APIV);
 });
 
+const reviewListing = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  let listing = await Listing.findById(id);
+  let newReview = new Review(req.body.review);
+
+  //add the id of review document to the respective listing document
+  listing.reviews.push(newReview);
+  await newReview.save();
+  await listing.save();
+  console.log(`new review saved: ${newReview}`);
+  return res.status(200).send("review added");
+});
+
 export {
   testListing,
   allListings,
@@ -75,4 +89,5 @@ export {
   editListing,
   updateListing,
   deleteListing,
+  reviewListing,
 };

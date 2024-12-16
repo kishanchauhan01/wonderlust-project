@@ -119,4 +119,15 @@ body {
     padding-left: 0;
     padding-right: 0;
 }
-
+/* star rating */
+.star-rating {
+    display: flex;
+    gap: 5px;
+    cursor: pointer;
+    font-size: 2rem;
+    color: #ccc;
+}
+.star-rating .star:hover,
+.star-rating .star.selected {
+    color: gold;
+}

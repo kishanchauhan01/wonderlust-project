@@ -2,7 +2,7 @@
 
 <div class="row mt-3">
   <div class="col-8 offset-3">
-    <h3>Listing Details:</h3>
+    <h3><b><%= listing.title %></b></h3>
   </div>
   <div class="card col-6 offset-3 show-card">
     <img
@@ -12,7 +12,6 @@
     />
     <div class="card-body">
       <p class="card-text">
-        <b><%= listing.title %></b> <br />
         <%= listing.description %> <br />
         &#8377 <%= listing.price.toLocaleString("en-IN") %> <br />
         <%= listing.location %> <%= listing.country %>
@@ -36,5 +35,32 @@
       <button class="btn btn-dark offset-4">Delete</button>
     </form>
   </div>
+
+  <div class="col-8 offset-3">
+    <hr>
+    <h4>Leave a Review</h4> 
+    <form method="POST" action="/api/v1/listings/<%= listing._id %>/review">
+      <div class="mb-3 mt-3">
+        <label for="rating" class="form-label">Rating</label>
+            <div id="star-rating" class="star-rating">
+                <span data-value="1" class="star">&#9733;</span>
+                <span data-value="2" class="star">&#9733;</span>
+                <span data-value="3" class="star">&#9733;</span>
+                <span data-value="4" class="star">&#9733;</span>
+                <span data-value="5" class="star">&#9733;</span>
+            </div>
+            <input type="hidden" id="rating" name="review[rating]" value="0">
+      </div>
+      <div class="mb-3 mt-3">
+        <label for="comment" class="form-label">Comments</label>
+        <textarea name="review[comment]" id="comment" cols="30" rows="10" class="form-control"></textarea>
+      </div>
+      <br>
+      <div>
+        <button class="btn btn-outline-dark">Submit</button>
+      </div>
+    </form>
+  </div>
+
 </div>
 <br><br>
